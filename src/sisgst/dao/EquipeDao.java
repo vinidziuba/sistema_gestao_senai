@@ -36,9 +36,9 @@ public class EquipeDao extends ConnectionFactory {
 
         String sql = "update equipe set nomeEquipe = ?, descricaoEquipe = ? where idEquipe = ?";
         try (PreparedStatement st = this.con.prepareStatement(sql)) {
-            st.setInt(1, eq.getIdEquipe());
-            st.setString(2, eq.getNomeEquipe());
-            st.setString(3, eq.getDescricaoEquipe());
+            st.setString(1, eq.getNomeEquipe());
+            st.setString(2, eq.getDescricaoEquipe());
+            st.setInt(3, eq.getIdEquipe());
 
             st.execute();
             st.close();
