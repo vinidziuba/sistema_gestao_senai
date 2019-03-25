@@ -58,7 +58,7 @@ public class Principal extends javax.swing.JFrame {
 
         PainelPrincipal.add(Amarelo, "amarelo");
         PainelPrincipal.add(listaCo, "listaCo");
-        PainelPrincipal.add(listaEqui, "listaEquipe");
+        
         PainelPrincipal.add(cadastroCo, "cadastroCo");
         PainelPrincipal.add(cadastroEqui, "cadastroEqui");
         PainelPrincipal.add(viewLogin, "Login");
@@ -473,6 +473,8 @@ public class Principal extends javax.swing.JFrame {
     }//GEN-LAST:event_CadastrarEquipeActionPerformed
 
     private void ListarEquipeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ListarEquipeActionPerformed
+        ListagemEquipe listaEqui = new ListagemEquipe();
+        PainelPrincipal.add(listaEqui, "listaEquipe");
         CardLayout cl = (CardLayout) PainelPrincipal.getLayout();
         cl.show(PainelPrincipal, "listaEquipe");
     }//GEN-LAST:event_ListarEquipeActionPerformed
