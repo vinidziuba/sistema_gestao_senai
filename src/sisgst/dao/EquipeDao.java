@@ -106,7 +106,7 @@ public class EquipeDao extends ConnectionFactory {
     
      public List<Equipe> listarEquipeCombo() throws SQLException {
         String sql = "select * from equipe";
-
+        
         try (PreparedStatement st = this.con.prepareStatement(sql)) {
             ResultSet rs = st.executeQuery();
 

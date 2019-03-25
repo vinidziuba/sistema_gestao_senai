@@ -5,8 +5,6 @@
  */
 package sisgst.principal;
 
-
-
 import java.awt.CardLayout;
 import java.awt.Color;
 import java.awt.event.KeyEvent;
@@ -26,6 +24,8 @@ import sisgst.view.CadastroColaborador;
 import sisgst.view.CadastroEquipe;
 import sisgst.view.ListagemColaborador;
 import sisgst.view.ListagemEquipe;
+import sisgst.view.ListarAgenda;
+import sisgst.view.ListarAgendaEquipe;
 
 import sisgst.view.PainelAmarelo;
 import sisgst.view.painelAdm;
@@ -37,12 +37,13 @@ import sisgst.view.telaAgenda;
  * @author Dziuba
  */
 public class Principal extends javax.swing.JFrame {
-
+    
+    private Colaborador co;
+    
     
     public Principal() throws SQLException {
         initComponents();
-        
-       
+
         PainelAmarelo Amarelo = new PainelAmarelo();
         ListagemColaborador listaCo = new ListagemColaborador();
         ListagemEquipe listaEqui = new ListagemEquipe();
@@ -50,7 +51,9 @@ public class Principal extends javax.swing.JFrame {
         CadastroEquipe cadastroEqui = new CadastroEquipe();
         painelColaborador pCol = new painelColaborador();
         painelAdm pAdm = new painelAdm();
-        telaAgenda tAgenda = new telaAgenda();
+        
+       
+        
         
 
         PainelPrincipal.add(Amarelo, "amarelo");
@@ -62,27 +65,29 @@ public class Principal extends javax.swing.JFrame {
         PainelPrincipal.add(pCol, "TelaCol");
         PainelPrincipal.add(pAdm, "TelaAdm");
         PainelPrincipal.add(listaCo, "edicaoCo");
-        PainelPrincipal.add(tAgenda, "tAgenda");
+      
+  
+        
 
-        this.DesabilitarMenus(); 
+        this.DesabilitarMenus();
     }
-    
 
-    private void DesabilitarMenus() { 
+    private void DesabilitarMenus() {
 
         menColaborador.setEnabled(false);
         menEquipe.setEnabled(false);
         menAgenda.setEnabled(false);
-        menTarefas.setEnabled(false);
-        
+
+
     }
 
     private void HabilitarMenus() {
         menColaborador.setEnabled(true);
         menEquipe.setEnabled(true);
         menAgenda.setEnabled(true);
-        menTarefas.setEnabled(true);
     }
+    
+  
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
@@ -107,12 +112,11 @@ public class Principal extends javax.swing.JFrame {
         CadastrarEquipe = new javax.swing.JMenuItem();
         ListarEquipe = new javax.swing.JMenuItem();
         menAgenda = new javax.swing.JMenu();
+        menuColaborador = new javax.swing.JMenu();
         AgendaColaborador = new javax.swing.JMenuItem();
         AgendaEquipe = new javax.swing.JMenuItem();
-        menTarefas = new javax.swing.JMenu();
-        CadastrarTarefa = new javax.swing.JMenuItem();
-        EditarTarefa = new javax.swing.JMenuItem();
-        ExcluirTarefa = new javax.swing.JMenuItem();
+        menuEquipe = new javax.swing.JMenu();
+        listaTarefaEquipe = new javax.swing.JMenuItem();
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -329,33 +333,41 @@ public class Principal extends javax.swing.JFrame {
 
         jMenuBar1.add(menEquipe);
 
-        menAgenda.setText("Agenda");
+        menAgenda.setText("Tarefas");
 
-        AgendaColaborador.setText("Colaborador");
+        menuColaborador.setText("Colaborador");
+
+        AgendaColaborador.setText("Listar Tarefas");
         AgendaColaborador.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 AgendaColaboradorActionPerformed(evt);
             }
         });
-        menAgenda.add(AgendaColaborador);
+        menuColaborador.add(AgendaColaborador);
 
-        AgendaEquipe.setText("Equipe");
-        menAgenda.add(AgendaEquipe);
+        AgendaEquipe.setText("Cadastrar Tarefa");
+        AgendaEquipe.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                AgendaEquipeActionPerformed(evt);
+            }
+        });
+        menuColaborador.add(AgendaEquipe);
+
+        menAgenda.add(menuColaborador);
+
+        menuEquipe.setText("Equipe");
+
+        listaTarefaEquipe.setText("Listar Tarefas");
+        listaTarefaEquipe.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                listaTarefaEquipeActionPerformed(evt);
+            }
+        });
+        menuEquipe.add(listaTarefaEquipe);
+
+        menAgenda.add(menuEquipe);
 
         jMenuBar1.add(menAgenda);
-
-        menTarefas.setText("Tarefas");
-
-        CadastrarTarefa.setText("Cadastrar");
-        menTarefas.add(CadastrarTarefa);
-
-        EditarTarefa.setText("Editar");
-        menTarefas.add(EditarTarefa);
-
-        ExcluirTarefa.setText("Excluir");
-        menTarefas.add(ExcluirTarefa);
-
-        jMenuBar1.add(menTarefas);
 
         setJMenuBar(jMenuBar1);
 
@@ -383,15 +395,13 @@ public class Principal extends javax.swing.JFrame {
         CardLayout cl = (CardLayout) PainelPrincipal.getLayout();
         cl.show(PainelPrincipal, "Login");
     }//GEN-LAST:event_PainelPrincipalComponentAdded
- 
+
     int tentativaLogin = 4;
-    
+
     private void botaoLogarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botaoLogarActionPerformed
-       
+
         ColaboradorDao CoDao = new ColaboradorDao();
-        
-        
-        
+
         try {
             if (tentativaLogin > 0 && CoDao.checkLogin(loginCo.getText(), senhaCo.getText())) {
                 ColaboradorDao CoDao2 = new ColaboradorDao();
@@ -399,7 +409,7 @@ public class Principal extends javax.swing.JFrame {
                 String tipoColaborador = valida.getTipoColaborador();
                 this.HabilitarMenus();
 
-                if ( tentativaLogin > 0 && tipoColaborador.equals("Colaborador")) {
+                if (tentativaLogin > 0 && tipoColaborador.equals("Colaborador")) {
                     CardLayout cl = (CardLayout) PainelPrincipal.getLayout();
                     cl.show(PainelPrincipal, "TelaCol");
                     menColaborador.setEnabled(false);
@@ -412,16 +422,17 @@ public class Principal extends javax.swing.JFrame {
                 }
 
                 /// System.out.println(valida);
-            } else {tentativaLogin--;
+            } else {
+                tentativaLogin--;
                 JOptionPane.showMessageDialog(null, " Login ou Senha Incorretos");
-                JOptionPane.showMessageDialog(null, "Tentativas restantes: "+tentativaLogin);
-                
+                JOptionPane.showMessageDialog(null, "Tentativas restantes: " + tentativaLogin);
+
             }
         } catch (SQLException ex) {
             Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_botaoLogarActionPerformed
-    
+
     private void menColaboradorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menColaboradorActionPerformed
         // TODO add your handling code here:
         //ListagemColaborador co = new ListagemColaborador();
@@ -447,7 +458,7 @@ public class Principal extends javax.swing.JFrame {
     private void CadastrarColaboradorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CadastrarColaboradorActionPerformed
         // TODO add your handling code here:
         CardLayout cl = (CardLayout) PainelPrincipal.getLayout();
-        cl.show(PainelPrincipal, "cadastroCo"); 
+        cl.show(PainelPrincipal, "cadastroCo");
     }//GEN-LAST:event_CadastrarColaboradorActionPerformed
 
     private void viewLoginComponentAdded(java.awt.event.ContainerEvent evt) {//GEN-FIRST:event_viewLoginComponentAdded
@@ -467,19 +478,42 @@ public class Principal extends javax.swing.JFrame {
     }//GEN-LAST:event_ListarEquipeActionPerformed
 
     private void AgendaColaboradorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AgendaColaboradorActionPerformed
-         CardLayout cl = (CardLayout) PainelPrincipal.getLayout();
-        cl.show(PainelPrincipal, "tAgenda");
+                ListarAgenda lAgenda;
+        try {
+            lAgenda = new ListarAgenda(co.getIdColaborador());
+              PainelPrincipal.add(lAgenda, "lAgenda");
+            CardLayout cl = (CardLayout) PainelPrincipal.getLayout();
+            cl.show(PainelPrincipal, "lAgenda");
+        } catch (SQLException ex) {
+            Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
+        }
+   
     }//GEN-LAST:event_AgendaColaboradorActionPerformed
+    public void pegarIdColaborador() {
+        ColaboradorDao CoDao = new ColaboradorDao();
 
+        try {
+            if (CoDao.checkLogin(loginCo.getText(), senhaCo.getText())) {
+                ColaboradorDao CoDao2 = new ColaboradorDao();
+                Colaborador valida = CoDao2.getColaborador(loginCo.getText(), senhaCo.getText());
+                String tipoColaborador = valida.getTipoColaborador();
+                Colaborador co = new Colaborador();
+                CoDao.getColaborador(co.getIdColaborador());
+                
+                
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
     private void botaoLogarKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_botaoLogarKeyPressed
-       
-    
+
+
     }//GEN-LAST:event_botaoLogarKeyPressed
 
     private void loginCoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_loginCoActionPerformed
-    
-        
-        
+
+
     }//GEN-LAST:event_loginCoActionPerformed
 
     private void senhaCoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_senhaCoActionPerformed
@@ -487,76 +521,108 @@ public class Principal extends javax.swing.JFrame {
     }//GEN-LAST:event_senhaCoActionPerformed
 
     private void senhaCoKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_senhaCoKeyPressed
-        if(evt.getKeyCode() == KeyEvent.VK_ENTER){
-           ColaboradorDao CoDao = new ColaboradorDao();
+        if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
+            ColaboradorDao CoDao = new ColaboradorDao();
 
-        try {
-            if (tentativaLogin > 0 && CoDao.checkLogin(loginCo.getText(), senhaCo.getText())) {
-                ColaboradorDao CoDao2 = new ColaboradorDao();
-                Colaborador valida = CoDao2.getColaborador(loginCo.getText(), senhaCo.getText());
-                String tipoColaborador = valida.getTipoColaborador();
-                this.HabilitarMenus();
-                
+            try {
+                if (tentativaLogin > 0 && CoDao.checkLogin(loginCo.getText(), senhaCo.getText())) {
+                    ColaboradorDao CoDao2 = new ColaboradorDao();
+                    Colaborador valida= this.co = CoDao2.getColaborador(loginCo.getText(), senhaCo.getText());
+                    String tipoColaborador = valida.getTipoColaborador();
+                    this.HabilitarMenus();
 
-                if (tentativaLogin > 0 && tipoColaborador.equals("Colaborador")) {
-                    CardLayout cl = (CardLayout) PainelPrincipal.getLayout();
-                    this.setExtendedState(MAXIMIZED_BOTH);
-                    cl.show(PainelPrincipal, "TelaCol");
-                    menColaborador.setEnabled(false);
-                    menEquipe.setEnabled(false); 
-                    
+                    if (tentativaLogin > 0 && tipoColaborador.equals("Colaborador")) {
+                        CardLayout cl = (CardLayout) PainelPrincipal.getLayout();
+                        this.setExtendedState(MAXIMIZED_BOTH);
+                        cl.show(PainelPrincipal, "TelaCol");
+                        menColaborador.setEnabled(false);
+                        menEquipe.setEnabled(false);
 
+                    } else {
+                        this.setExtendedState(MAXIMIZED_BOTH);
+                        CardLayout cl = (CardLayout) PainelPrincipal.getLayout();
+                        cl.show(PainelPrincipal, "TelaAdm");
+
+                    }
+
+                    /// System.out.println(valida);
                 } else {
-                    this.setExtendedState(MAXIMIZED_BOTH);
-                    CardLayout cl = (CardLayout) PainelPrincipal.getLayout();
-                    cl.show(PainelPrincipal, "TelaAdm");
-
+                    tentativaLogin--;
+                    JOptionPane.showMessageDialog(null, " Login ou Senha Incorretos");
+                    JOptionPane.showMessageDialog(null, "Tentativas restantes: " + tentativaLogin);
                 }
-
-                /// System.out.println(valida);
-            } else {tentativaLogin--;
-                JOptionPane.showMessageDialog(null, " Login ou Senha Incorretos");
-                JOptionPane.showMessageDialog(null, "Tentativas restantes: "+tentativaLogin);
-            }if(tentativaLogin == 0 ){
-                JOptionPane.showMessageDialog(null, "Você errou muitas vezes a senha");
-            this.DesabilitarMenus();
-            loginCo.setEnabled(false);
-            senhaCo.setEnabled(false);
-            botaoLogar.setEnabled(false);
+                if (tentativaLogin == 0) {
+                    JOptionPane.showMessageDialog(null, "Você errou muitas vezes a senha");
+                    this.DesabilitarMenus();
+                    loginCo.setEnabled(false);
+                    senhaCo.setEnabled(false);
+                    botaoLogar.setEnabled(false);
+                }
+            } catch (SQLException ex) {
+                Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
             }
-        } catch (SQLException ex) {
-            Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
         }
-    }
     }//GEN-LAST:event_senhaCoKeyPressed
 
     private void botaoSairActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botaoSairActionPerformed
-    System.exit(0);
+        System.exit(0);
     }//GEN-LAST:event_botaoSairActionPerformed
 
     private void botaoLogarMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_botaoLogarMouseEntered
-         botaoLogar.setBackground(new Color(235, 235, 235));
+        botaoLogar.setBackground(new Color(235, 235, 235));
         botaoLogar.setForeground(new Color(58, 65, 84));
     }//GEN-LAST:event_botaoLogarMouseEntered
 
     private void botaoSairMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_botaoSairMouseEntered
-      botaoSair.setBackground(new Color(235, 235, 235));
+        botaoSair.setBackground(new Color(235, 235, 235));
         botaoSair.setForeground(new Color(217, 81, 51));
     }//GEN-LAST:event_botaoSairMouseEntered
 
     private void botaoLogarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_botaoLogarMouseClicked
-   
+
     }//GEN-LAST:event_botaoLogarMouseClicked
 
     private void botaoLogarMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_botaoLogarMouseExited
-      botaoLogar.setBackground(new Color(58, 65, 84));
+        botaoLogar.setBackground(new Color(58, 65, 84));
         botaoLogar.setForeground(Color.WHITE);
     }//GEN-LAST:event_botaoLogarMouseExited
 
     private void botaoSairMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_botaoSairMouseExited
-       botaoSair.setBackground(new Color(217, 81, 51));
+        botaoSair.setBackground(new Color(217, 81, 51));
         botaoSair.setForeground(Color.WHITE);
     }//GEN-LAST:event_botaoSairMouseExited
+
+    private void AgendaEquipeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AgendaEquipeActionPerformed
+        telaAgenda tAgenda;
+       
+        try {
+            tAgenda = new telaAgenda(this.co);
+             PainelPrincipal.add(tAgenda, "tAgenda");
+        CardLayout cl = (CardLayout) PainelPrincipal.getLayout();
+        cl.show(PainelPrincipal, "tAgenda");
+        } catch (SQLException ex) {
+            Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
+        }
+       
+        
+    }//GEN-LAST:event_AgendaEquipeActionPerformed
+
+    private void listaTarefaEquipeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_listaTarefaEquipeActionPerformed
+        ListarAgendaEquipe lAgendaEquipe;
+        try {
+            lAgendaEquipe = new ListarAgendaEquipe(co.getEquipeColabarador());
+            PainelPrincipal.add(lAgendaEquipe, "lAgendaEquipe");
+            CardLayout cl = (CardLayout) PainelPrincipal.getLayout();
+            cl.show(PainelPrincipal, "lAgendaEquipe");
+            
+        } catch (SQLException ex) {
+            Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        
+       
+        
+    }//GEN-LAST:event_listaTarefaEquipeActionPerformed
 
     /**
      * @param args the command line arguments
@@ -597,16 +663,13 @@ public class Principal extends javax.swing.JFrame {
             }
         });
     }
-    
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenuItem AgendaColaborador;
     private javax.swing.JMenuItem AgendaEquipe;
     private javax.swing.JMenuItem CadastrarColaborador;
     private javax.swing.JMenuItem CadastrarEquipe;
-    private javax.swing.JMenuItem CadastrarTarefa;
-    private javax.swing.JMenuItem EditarTarefa;
-    private javax.swing.JMenuItem ExcluirTarefa;
     private javax.swing.JMenuItem ListarColaborador;
     private javax.swing.JMenuItem ListarEquipe;
     private javax.swing.JPanel PainelPrincipal;
@@ -618,11 +681,13 @@ public class Principal extends javax.swing.JFrame {
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
+    private javax.swing.JMenuItem listaTarefaEquipe;
     private javax.swing.JTextField loginCo;
     private javax.swing.JMenu menAgenda;
     private javax.swing.JMenu menColaborador;
     private javax.swing.JMenu menEquipe;
-    private javax.swing.JMenu menTarefas;
+    private javax.swing.JMenu menuColaborador;
+    private javax.swing.JMenu menuEquipe;
     private javax.swing.JTextField senhaCo;
     private javax.swing.JPanel viewLogin;
     // End of variables declaration//GEN-END:variables

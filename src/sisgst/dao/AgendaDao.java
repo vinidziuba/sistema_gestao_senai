@@ -106,4 +106,114 @@ public class AgendaDao extends ConnectionFactory {
         }
     }
 
+     public List<Agenda> listarAgendaColaborador(int codigo) throws SQLException {
+        String sql = "select * from agenda where codigoColaboradorAgenda = ?";
+
+        try (PreparedStatement st = this.con.prepareStatement(sql)) {
+            st.setInt(1, codigo);
+            ResultSet rs = st.executeQuery();
+            List<Agenda> Agenda = new ArrayList<Agenda>();
+            
+            while (rs.next()) {
+                Agenda a = new Agenda();
+                a.setCodigoColaboradorAgenda(rs.getInt("codigoColaboradorAgenda"));
+                a.setDataCompromissoAgenda(rs.getString("dataCompromissoAgenda"));
+                a.setDataCriacaoAgenda(rs.getDate("dataCriacaoAgenda"));
+                a.setTituloAgenda(rs.getString("tituloAgenda"));
+                a.setDescricaoAgenda(rs.getString("descricaoAgenda"));
+
+                Agenda.add(a);
+            }
+            rs.close();
+            st.close();
+            this.con.close();
+            return Agenda;
+        }
+    }
+     
+      public List<Agenda> listarAgendaEquipe(int codigo) throws SQLException {
+        String sql = "select * from agenda where codigoEquipeAgenda = ?";
+        
+        try (PreparedStatement st = this.con.prepareStatement(sql)) {
+            st.setInt(1, codigo);
+            ResultSet rs = st.executeQuery();
+            
+
+            List<Agenda> Agenda = new ArrayList<Agenda>();
+
+            while (rs.next()) {
+                Agenda a = new Agenda();
+                a.setCodigoEquipeAgenda(rs.getInt("codigoEquipeAgenda"));
+                a.setDataCompromissoAgenda(rs.getString("dataCompromissoAgenda"));
+                a.setDataCriacaoAgenda(rs.getDate("dataCriacaoAgenda"));
+                a.setTituloAgenda(rs.getString("tituloAgenda"));
+                a.setDescricaoAgenda(rs.getString("descricaoAgenda"));
+
+                Agenda.add(a);
+            }
+            rs.close();
+            st.close();
+            this.con.close();
+            return Agenda;
+        }
+    }
+         public Colaborador getColaborador(String usuario, String senha) throws SQLException {
+        String sql = "select * from colaborador where usuarioColaborador = ? and senhaColaborador = ?";
+        Colaborador funcionario = null;
+        
+
+        try (PreparedStatement st = this.con.prepareStatement(sql)) {
+            st.setString(1, usuario);
+            st.setString(2, senha);
+            try (ResultSet rs = st.executeQuery()) {
+                if (rs.next()) {
+                    funcionario = new Colaborador();
+                    funcionario.setIdColaborador(rs.getInt("idColaborador"));
+                    funcionario.setNomeColaborador(rs.getString("nomeColaborador"));
+                    funcionario.setTipoColaborador(rs.getString("tipoColaborador"));
+                    
+                }
+            }
+            st.close();
+        }
+
+        this.con.close();
+        return funcionario;
+    }
+           public Colaborador getColaborador(int idColaborador) throws SQLException {
+        String sql = "select * from colaborador where idColaborador = ?";
+        Colaborador equipe = null;
+
+        try (PreparedStatement st = this.con.prepareStatement(sql)) {
+            st.setInt(1, idColaborador);
+            try (ResultSet rs = st.executeQuery()) {
+                if (rs.next()) {
+                    equipe = new Colaborador();
+                    equipe.setIdColaborador(rs.getInt("idColaborador"));
+                    equipe.setNomeColaborador(rs.getString("nomeColaborador"));
+                    equipe.setIdColaborador(rs.getInt("idColaborador"));
+                equipe.setNomeColaborador(rs.getString("nomeColaborador"));
+                equipe.setIdadeColaborador(rs.getString("idadeColaborador")); 
+                equipe.setTipoColaborador(rs.getString("tipoColaborador"));
+                equipe.setCpfColaborador(rs.getString("cpfColaborador"));
+                equipe.setEmailColaborador(rs.getString("emailColaborador"));
+                equipe.setCelularColaborador(rs.getString("celularColaborador"));
+                equipe.setUsuarioColaborador(rs.getString("usuarioColaborador"));
+                equipe.setSenhaColaborador(rs.getString("senhaColaborador"));
+                equipe.setEquipeColabarador(rs.getInt("equipeColaborador"));
+                equipe.setRuaColaborador(rs.getString("ruaColaborador"));
+                equipe.setBairroColaborador(rs.getString("bairroColaborador"));
+                equipe.setCidadeColaborador(rs.getString("cidadeColaborador"));
+                equipe.setComplementoColaborador(rs.getString("complementoColaborador"));
+                equipe.setCepColaborador(rs.getString("cepColaborador"));
+                    
+                    
+                }
+            }
+            st.close();
+        }
+
+        this.con.close();
+        return equipe;
+    }
 }

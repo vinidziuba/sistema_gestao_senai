@@ -221,6 +221,17 @@ public class ColaboradorDao extends ConnectionFactory {
                     funcionario.setIdColaborador(rs.getInt("idColaborador"));
                     funcionario.setNomeColaborador(rs.getString("nomeColaborador"));
                     funcionario.setTipoColaborador(rs.getString("tipoColaborador"));
+                    funcionario.setBairroColaborador(rs.getString("bairroColaborador"));
+                    funcionario.setCelularColaborador(rs.getString("celularColaborador"));
+                    funcionario.setCpfColaborador(rs.getString("cpfColaborador"));
+                    funcionario.setCidadeColaborador(rs.getString("cidadeColaborador"));
+                    funcionario.setEquipeColabarador(rs.getInt("equipeColaborador"));
+                    funcionario.setEmailColaborador(rs.getString("emailColaborador"));
+                    funcionario.setComplementoColaborador(rs.getString("complementoColaborador"));
+                    funcionario.setUsuarioColaborador(rs.getString("usuarioColaborador"));
+                    funcionario.setSenhaColaborador(rs.getString("senhaColaborador"));
+                    funcionario.setRuaColaborador(rs.getString("ruaColaborador"));
+                    funcionario.setCepColaborador(rs.getString("cepColaborador"));
                     
                 }
             }
