@@ -414,7 +414,6 @@ public class ListarAgenda extends javax.swing.JPanel {
         if (this.linha != -1) {
             String codigo = tabelaAgenda.getValueAt(linha, 0).toString();
             int codigoColaborador = Integer.parseInt(codigo);
-            this.editarTarefa(codigoColaborador);
             this.cl.show(this, "editarTarefa");
         }
     }//GEN-LAST:event_EditarActionPerformed
