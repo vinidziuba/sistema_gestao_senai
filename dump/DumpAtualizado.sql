@@ -31,8 +31,8 @@ CREATE TABLE `agenda` (
   `descricaoAgenda` varchar(50) DEFAULT NULL,
   KEY `agendaColaboradorPK_idx` (`codigoColaboradorAgenda`),
   KEY `agendaEquipePK_idx` (`codigoEquipeAgenda`),
-  CONSTRAINT `agendaColaboradorPK` FOREIGN KEY (`codigoColaboradorAgenda`) REFERENCES `colaborador` (`idColaborador`),
-  CONSTRAINT `agendaEquipePK` FOREIGN KEY (`codigoEquipeAgenda`) REFERENCES `equipe` (`idEquipe`)
+  CONSTRAINT `agendaColaboradorPK` FOREIGN KEY (`codigoColaboradorAgenda`) REFERENCES `colaborador` (`idColaborador`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `agendaEquipePK` FOREIGN KEY (`codigoEquipeAgenda`) REFERENCES `equipe` (`idEquipe`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -42,6 +42,7 @@ CREATE TABLE `agenda` (
 
 LOCK TABLES `agenda` WRITE;
 /*!40000 ALTER TABLE `agenda` DISABLE KEYS */;
+INSERT INTO `agenda` VALUES ('2019-03-16','31/22/1321',NULL,NULL,'sadasds','sadasd'),('2019-03-16','32/13/2132',2,5,'sdsad','sadsad'),('2019-03-16','32/13/2132',2,1,'sdsad','sadsad'),('2019-03-16','32/13/2132',2,2,'sdsad','sadsad'),('2019-03-16','12/31/2312',2,4,'assad','asdsad'),('2019-03-16','16/03/1999',2,1,'Titulo','Descrição'),('2019-03-16','12/32/1321',2,1,'aaaaa','aaaaa');
 /*!40000 ALTER TABLE `agenda` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -67,11 +68,11 @@ CREATE TABLE `colaborador` (
   `bairroColaborador` varchar(30) DEFAULT NULL,
   `cidadeColaborador` varchar(30) DEFAULT NULL,
   `complementoColaborador` varchar(40) DEFAULT NULL,
-  `cepColaborador` varchar(15) DEFAULT NULL,
+  `cepColaborador` int(12) DEFAULT NULL,
   PRIMARY KEY (`idColaborador`),
   KEY `equipeColaboradorPK_idx` (`equipeColaborador`),
   CONSTRAINT `equipeColaboradorPK` FOREIGN KEY (`equipeColaborador`) REFERENCES `equipe` (`idEquipe`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -80,7 +81,7 @@ CREATE TABLE `colaborador` (
 
 LOCK TABLES `colaborador` WRITE;
 /*!40000 ALTER TABLE `colaborador` DISABLE KEYS */;
-INSERT INTO `colaborador` VALUES (1,'Cristian',23,'Gerente','097.977.949-97','cristianratzmann@gmail.com','989180446','Cristian','123456',1,'Rua Francisco Jacob Khnis','Limoeiro','Brusque','Casa','88318-520');
+INSERT INTO `colaborador` VALUES (2,'Cristian Ratzmann',23,'Selecione','097.977.949-97','cristianratzmann@gmail.com','(  )     -    ','Cristian','123456',1,'Erico Fucnker','Cedrinho','Brusque','Casa',88358045);
 /*!40000 ALTER TABLE `colaborador` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -96,7 +97,7 @@ CREATE TABLE `equipe` (
   `nomeEquipe` varchar(20) DEFAULT NULL,
   `descricaoEquipe` varchar(50) DEFAULT NULL,
   PRIMARY KEY (`idEquipe`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -105,9 +106,13 @@ CREATE TABLE `equipe` (
 
 LOCK TABLES `equipe` WRITE;
 /*!40000 ALTER TABLE `equipe` DISABLE KEYS */;
-INSERT INTO `equipe` VALUES (1,'Vendas','Vendedores');
+INSERT INTO `equipe` VALUES (1,'Vendas','Vendedores'),(2,'Rh','Contratações'),(3,'Almoxarifado','Cuidar Estoque'),(4,'Contabilidade','Contas a pagar'),(5,'Vendas','vendas'),(6,'cristian','cristian'),(7,'Recepção','Atendimento'),(8,'Logística','Cargas');
 /*!40000 ALTER TABLE `equipe` ENABLE KEYS */;
 UNLOCK TABLES;
+
+--
+-- Dumping events for database 'sistema_gestao'
+--
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
@@ -118,4 +123,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2019-03-07 21:30:27
+-- Dump completed on 2019-03-20 18:54:15

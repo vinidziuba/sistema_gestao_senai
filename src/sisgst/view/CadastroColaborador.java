@@ -5,6 +5,8 @@
  */
 package sisgst.view;
 
+import br.com.caelum.stella.validation.CPFValidator;
+import br.com.caelum.stella.validation.InvalidStateException;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
@@ -391,7 +393,53 @@ public class CadastroColaborador extends javax.swing.JPanel {
         
         
     }//GEN-LAST:event_BotaoCadastrarActionPerformed
+    private boolean ValidarDados() {
+       CPFValidator validator = new CPFValidator();
 
+       try {
+
+           validator.assertValid(cpCPF.getText());
+           String Nome = cpNome.getText();
+           String Idade = cpIdade.getText();
+           String Cel = cpCelular.getText();
+           String Usu = cpUsuario.getText();
+           String Senha = cpSenha.getText();
+           String TipoColaborador = ComboTipoColaborador.getSelectedItem().toString();
+           String Equipe = comboEquipe.getSelectedItem().toString();
+           String Email = cpEmail.getText();
+
+           if (Nome.isEmpty() || Nome.trim().equals("")) {
+               JOptionPane.showMessageDialog(null, "DIGITE UM NOME VÁLIDO!");
+               return false;
+           } else if (Idade.isEmpty() || Idade.trim().equals("")) {
+               JOptionPane.showMessageDialog(null, "INSIRA UMA IDADE");
+               return false;
+           } else if (Cel.equals("(  )     -    ") || Cel.length() < 11) {
+               JOptionPane.showMessageDialog(null, "INFORME SEU TELEFONE PARA CONTATO");
+               return false;
+           } else if (Usu.isEmpty() || Usu.trim().equals("")) {
+               JOptionPane.showMessageDialog(null, "INFORME UM USUÁRIO VÁLIDO!");
+               return false;
+           } else if (Senha.isEmpty() || Senha.trim().equals("")) {
+               JOptionPane.showMessageDialog(null, "INSIRA ALGUMA SENHA PRO SEU USUÁRIO!");
+               return false;
+           } else if (TipoColaborador.isEmpty() || TipoColaborador.trim().equals("Selecione")) {
+               JOptionPane.showMessageDialog(null, "INFORME O TIPO DO COLABORADOR!");
+               return false;
+           } else if (Equipe.isEmpty() || Equipe.trim().equals("Selecione a equipe")) {
+               JOptionPane.showMessageDialog(null, "INFORME A EQUIPE DO COLABORADOR");  
+               return false;
+           } else if (Email.isEmpty() || Email.trim().equals("")) {
+               JOptionPane.showMessageDialog(null, "INFORME UM E-MAIL PARA CONTATO");
+               return false;
+           }
+
+       } catch (InvalidStateException e) {
+JOptionPane.showMessageDialog(null, "CPF INVÁLIDO!");
+           return false;
+       }
+       return true;
+   }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton BotaoCadastrar;
