@@ -1,13 +1,13 @@
--- MySQL dump 10.13  Distrib 8.0.15, for Win64 (x86_64)
+-- MySQL dump 10.13  Distrib 5.7.17, for Win64 (x86_64)
 --
--- Host: localhost    Database: sistema_gestao
+-- Host: 127.0.0.1    Database: sistema_gestao
 -- ------------------------------------------------------
--- Server version	8.0.15
+-- Server version	5.5.5-10.1.28-MariaDB
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
 /*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
- SET NAMES utf8 ;
+/*!40101 SET NAMES utf8 */;
 /*!40103 SET @OLD_TIME_ZONE=@@TIME_ZONE */;
 /*!40103 SET TIME_ZONE='+00:00' */;
 /*!40014 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0 */;
@@ -21,19 +21,21 @@
 
 DROP TABLE IF EXISTS `agenda`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
- SET character_set_client = utf8mb4 ;
+/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `agenda` (
+  `codigoTarefa` int(11) NOT NULL AUTO_INCREMENT,
   `dataCriacaoAgenda` date DEFAULT NULL,
   `dataCompromissoAgenda` varchar(20) DEFAULT NULL,
   `codigoColaboradorAgenda` int(3) DEFAULT NULL,
   `codigoEquipeAgenda` int(3) DEFAULT NULL,
   `tituloAgenda` varchar(30) DEFAULT NULL,
   `descricaoAgenda` varchar(50) DEFAULT NULL,
+  PRIMARY KEY (`codigoTarefa`),
   KEY `agendaColaboradorPK_idx` (`codigoColaboradorAgenda`),
   KEY `agendaEquipePK_idx` (`codigoEquipeAgenda`),
   CONSTRAINT `agendaColaboradorPK` FOREIGN KEY (`codigoColaboradorAgenda`) REFERENCES `colaborador` (`idColaborador`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `agendaEquipePK` FOREIGN KEY (`codigoEquipeAgenda`) REFERENCES `equipe` (`idEquipe`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -42,7 +44,7 @@ CREATE TABLE `agenda` (
 
 LOCK TABLES `agenda` WRITE;
 /*!40000 ALTER TABLE `agenda` DISABLE KEYS */;
-INSERT INTO `agenda` VALUES ('2019-03-16','31/22/1321',NULL,NULL,'sadasds','sadasd'),('2019-03-16','32/13/2132',2,5,'sdsad','sadsad'),('2019-03-16','32/13/2132',2,1,'sdsad','sadsad'),('2019-03-16','32/13/2132',2,2,'sdsad','sadsad'),('2019-03-16','12/31/2312',2,4,'assad','asdsad'),('2019-03-16','16/03/1999',2,1,'Titulo','Descrição'),('2019-03-16','12/32/1321',2,1,'aaaaa','aaaaa');
+INSERT INTO `agenda` VALUES (1,'2019-03-16','31/22/1321',NULL,NULL,'sadasds','sadasd'),(2,'2019-03-16','32/13/2132',2,5,'sdsad','sadsad'),(3,'2019-03-16','32/13/2132',2,1,'sdsad','sadsad'),(4,'2019-03-16','32/13/2132',2,2,'sdsad','sadsad'),(5,'2019-03-16','12/31/2312',2,4,'assad','asdsad'),(6,'2019-03-16','16/03/1999',2,1,'Titulo','Descrição'),(7,'2019-03-16','12/32/1321',2,1,'aaaaa','aaaaa'),(8,'2019-03-27','32/13/2132',2,1,'sdsad','sadsad'),(9,'2019-03-28','32/13/2132',2,1,'sdsad','Treinamento'),(10,'2019-03-28','32/13/2132',2,1,'Denner tarefa','sadsad'),(11,'2019-03-28','12/12/2019',2,1,'DziubaGay','DennaoMachoAlpha');
 /*!40000 ALTER TABLE `agenda` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -52,7 +54,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `colaborador`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
- SET character_set_client = utf8mb4 ;
+/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `colaborador` (
   `idColaborador` int(2) NOT NULL AUTO_INCREMENT,
   `nomeColaborador` varchar(40) DEFAULT NULL,
@@ -69,6 +71,7 @@ CREATE TABLE `colaborador` (
   `cidadeColaborador` varchar(30) DEFAULT NULL,
   `complementoColaborador` varchar(40) DEFAULT NULL,
   `cepColaborador` int(12) DEFAULT NULL,
+  `dataEntrada` datetime DEFAULT NULL,
   PRIMARY KEY (`idColaborador`),
   KEY `equipeColaboradorPK_idx` (`equipeColaborador`),
   CONSTRAINT `equipeColaboradorPK` FOREIGN KEY (`equipeColaborador`) REFERENCES `equipe` (`idEquipe`)
@@ -81,7 +84,7 @@ CREATE TABLE `colaborador` (
 
 LOCK TABLES `colaborador` WRITE;
 /*!40000 ALTER TABLE `colaborador` DISABLE KEYS */;
-INSERT INTO `colaborador` VALUES (2,'Cristian Ratzmann',23,'Selecione','097.977.949-97','cristianratzmann@gmail.com','(  )     -    ','Cristian','123456',1,'Erico Fucnker','Cedrinho','Brusque','Casa',88358045);
+INSERT INTO `colaborador` VALUES (2,'Cristian Ratzmann',23,'Selecione','097.977.949-97','cristianratzmann@gmail.com','(  )     -    ','Cristian','123456',1,'Erico Fucnker','Cedrinho','Brusque','Casa',88358045,'2019-03-28 02:45:05');
 /*!40000 ALTER TABLE `colaborador` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -91,7 +94,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `equipe`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
- SET character_set_client = utf8mb4 ;
+/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `equipe` (
   `idEquipe` int(4) NOT NULL AUTO_INCREMENT,
   `nomeEquipe` varchar(20) DEFAULT NULL,
@@ -109,10 +112,6 @@ LOCK TABLES `equipe` WRITE;
 INSERT INTO `equipe` VALUES (1,'Vendas','Vendedores'),(2,'Rh','Contratações'),(3,'Almoxarifado','Cuidar Estoque'),(4,'Contabilidade','Contas a pagar'),(5,'Vendas','vendas'),(6,'cristian','cristian'),(7,'Recepção','Atendimento'),(8,'Logística','Cargas');
 /*!40000 ALTER TABLE `equipe` ENABLE KEYS */;
 UNLOCK TABLES;
-
---
--- Dumping events for database 'sistema_gestao'
---
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
@@ -123,4 +122,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2019-03-20 18:54:15
+-- Dump completed on 2019-03-27 20:51:17
