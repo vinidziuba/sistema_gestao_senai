@@ -407,6 +407,8 @@ public class Principal extends javax.swing.JFrame {
                 ColaboradorDao CoDao2 = new ColaboradorDao();
                 Colaborador valida = CoDao2.getColaborador(loginCo.getText(), senhaCo.getText());
                 String tipoColaborador = valida.getTipoColaborador();
+                ColaboradorDao CoDao3 = new ColaboradorDao();
+                CoDao3.UltimoAcesso(co.getIdColaborador());
                 this.HabilitarMenus();
 
                 if (tentativaLogin > 0 && tipoColaborador.equals("Colaborador")) {
@@ -482,7 +484,7 @@ public class Principal extends javax.swing.JFrame {
     private void AgendaColaboradorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AgendaColaboradorActionPerformed
                 ListarAgenda lAgenda;
         try {
-            lAgenda = new ListarAgenda(co.getIdColaborador());
+            lAgenda = new ListarAgenda(this.co);
               PainelPrincipal.add(lAgenda, "lAgenda");
             CardLayout cl = (CardLayout) PainelPrincipal.getLayout();
             cl.show(PainelPrincipal, "lAgenda");
@@ -531,6 +533,8 @@ public class Principal extends javax.swing.JFrame {
                     ColaboradorDao CoDao2 = new ColaboradorDao();
                     Colaborador valida= this.co = CoDao2.getColaborador(loginCo.getText(), senhaCo.getText());
                     String tipoColaborador = valida.getTipoColaborador();
+                     ColaboradorDao CoDao3 = new ColaboradorDao();
+                     CoDao3.UltimoAcesso(co.getIdColaborador());
                     this.HabilitarMenus();
 
                     if (tentativaLogin > 0 && tipoColaborador.equals("Colaborador")) {

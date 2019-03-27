@@ -20,6 +20,7 @@ public class Agenda {
     private int codigoEquipeAgenda;
     private String tituloAgenda;
     private String descricaoAgenda;
+    private int codigoAgenda;
 
     public Date getDataCriacaoAgenda() {
         return dataCriacaoAgenda;
@@ -69,6 +70,14 @@ public class Agenda {
         this.descricaoAgenda = descricaoAgenda;
     }
 
+    public int getCodigoAgenda() {
+        return codigoAgenda;
+    }
+
+    public void setCodigoAgenda(int codigoAgenda) {
+        this.codigoAgenda = codigoAgenda;
+    }
+   
 
           
     

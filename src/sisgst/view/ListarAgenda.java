@@ -15,6 +15,7 @@ import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import sisgst.dao.AgendaDao;
 import sisgst.dao.ColaboradorDao;
+import sisgst.dao.EquipeDao;
 import sisgst.modelo.Agenda;
 import sisgst.modelo.Colaborador;
 import sisgst.modelo.Equipe;
@@ -27,44 +28,64 @@ import sisgst.principal.Principal;
 public class ListarAgenda extends javax.swing.JPanel {
 
     private boolean radioAux = true;
-    private List<Equipe> listaEquipe;
     private int linha;
-    private List<Colaborador> listaColaborador;
     private CardLayout cl;
     private Agenda agenda;
-
+    private int codigoAgenda;
+    private Colaborador col;
+    private List<Equipe> listaEquipe;
+    private List<Colaborador> listaColaborador;
     /**
      * Creates new form ListarAgenda
      */
-    
+
     private int codigoColaborador;
-    
-    public ListarAgenda(int codigo) throws SQLException {
-        
+
+    public ListarAgenda(Colaborador col) throws SQLException {
+
         initComponents();
-        
-        this.codigoColaborador= codigo;
+        this.col = col;
+
         popularTabelaColaborador();
-        
+        this.cl = (CardLayout) this.getLayout();
         this.add(editarTarefa, "editarTarefa");
+        EquipeDao equipe = new EquipeDao();
+        this.listaEquipe = equipe.listarEquipeCombo();
+        String tipoColaborador = this.col.getTipoColaborador();
+        for (int i = 0; i < listaEquipe.size(); i++) {
+            Equipe e = listaEquipe.get(i);
+            if (tipoColaborador.equals("Gestor")) {
+                comboEquipe.addItem(e.getNomeEquipe());
+            } else if (col.getEquipeColabarador() == e.getIdEquipe()) {
+                comboEquipe.addItem(e.getNomeEquipe());
+            }
+        }
+        ColaboradorDao colaborador = new ColaboradorDao();
+        this.listaColaborador = colaborador.listarColaboradorCombo();
+        for (int i = 0; i < listaColaborador.size(); i++) {
+            Colaborador co = listaColaborador.get(i);
+            if (tipoColaborador.equals("Gestor")) {
+                comboColaborador.addItem(co.getNomeColaborador());
+            } else if (col.getIdColaborador() == co.getIdColaborador()) {
+                comboColaborador.addItem(co.getNomeColaborador());
+            }
+        }
     }
 
     private void popularTabelaColaborador() throws SQLException {
         AgendaDao Ag = new AgendaDao();
-        List<Agenda> listaAgenda = Ag.listarAgendaColaborador(this.codigoColaborador);
+        List<Agenda> listaAgenda = Ag.listarAgendaColaborador(this.col.getIdColaborador());
         DefaultTableModel model = (DefaultTableModel) tabelaAgenda.getModel();
         List<Object> lista = new ArrayList<Object>();
         for (int i = 0; i < listaAgenda.size(); i++) {
             Agenda g = listaAgenda.get(i);
-            lista.add(new Object[]{g.getCodigoColaboradorAgenda(), g.getDataCriacaoAgenda(),g.getDataCompromissoAgenda(),g.getTituloAgenda(), g.getDescricaoAgenda() });
+            lista.add(new Object[]{g.getCodigoAgenda(), g.getDataCriacaoAgenda(), g.getDataCompromissoAgenda(), g.getTituloAgenda(), g.getDescricaoAgenda()});
         }
-        
-        
-        
+
         for (int idx = 0; idx < lista.size(); idx++) {
             model.addRow((Object[]) lista.get(idx));
         }
-        
+
     }
 
     /**
@@ -87,7 +108,7 @@ public class ListarAgenda extends javax.swing.JPanel {
         dataAgenda = new javax.swing.JFormattedTextField();
         tituloAgenda = new javax.swing.JTextField();
         jLabel4 = new javax.swing.JLabel();
-        jScrollPane2 = new javax.swing.JScrollPane();
+        jScrollPane3 = new javax.swing.JScrollPane();
         descricaoAgenda = new javax.swing.JTextArea();
         jLabel3 = new javax.swing.JLabel();
         botaoCadastrarTarefa = new javax.swing.JButton();
@@ -175,12 +196,12 @@ public class ListarAgenda extends javax.swing.JPanel {
         descricaoAgenda.setColumns(20);
         descricaoAgenda.setFont(new java.awt.Font("Monospaced", 0, 14)); // NOI18N
         descricaoAgenda.setRows(5);
-        jScrollPane2.setViewportView(descricaoAgenda);
+        jScrollPane3.setViewportView(descricaoAgenda);
 
         jLabel3.setFont(new java.awt.Font("Monospaced", 0, 14)); // NOI18N
         jLabel3.setText("Descrição Tarefa");
 
-        botaoCadastrarTarefa.setText("Cadastrar Tarefa");
+        botaoCadastrarTarefa.setText("Editar Tarefa");
         botaoCadastrarTarefa.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 botaoCadastrarTarefaActionPerformed(evt);
@@ -262,7 +283,7 @@ public class ListarAgenda extends javax.swing.JPanel {
                                         .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 192, javax.swing.GroupLayout.PREFERRED_SIZE)
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                                     .addGroup(editarTarefaLayout.createSequentialGroup()
-                                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 176, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 176, javax.swing.GroupLayout.PREFERRED_SIZE)
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                         .addComponent(botaoCadastrarTarefa, javax.swing.GroupLayout.PREFERRED_SIZE, 135, javax.swing.GroupLayout.PREFERRED_SIZE)
                                         .addGap(40, 40, 40)))))
@@ -313,24 +334,42 @@ public class ListarAgenda extends javax.swing.JPanel {
                         .addComponent(comboColaborador, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addComponent(tituloAgenda, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(radioColaborador))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 102, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(editarTarefaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(editarTarefaLayout.createSequentialGroup()
                         .addComponent(botaoCadastrarTarefa)
                         .addContainerGap())
-                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 117, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 117, javax.swing.GroupLayout.PREFERRED_SIZE)))
         );
 
         add(editarTarefa, "card3");
     }// </editor-fold>//GEN-END:initComponents
-     
-    
+
+    private void preencherCamposEdicao(int idAgenda) {
+        AgendaDao agendaDao = new AgendaDao();
+        try {
+            this.agenda = agendaDao.getAgenda(idAgenda);
+            this.tituloAgenda.setText(this.agenda.getTituloAgenda());
+            this.comboEquipe.setSelectedItem(this.agenda.getCodigoEquipeAgenda());
+            this.comboColaborador.setSelectedItem(this.agenda.getCodigoColaboradorAgenda());
+            this.descricaoAgenda.setText(this.agenda.getDescricaoAgenda());
+            this.dataAgenda.setText(this.agenda.getDataCompromissoAgenda());
+        } catch (SQLException ex) {
+            Logger.getLogger(ListagemColaborador.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+    }
     private void tabelaAgendaMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tabelaAgendaMouseClicked
         if ((evt.getModifiers() & evt.BUTTON3_MASK) != 0) {
-            this.linha = tabelaAgenda.getSelectedRow();
-           menuAgenda.show(tabelaAgenda, evt.getX(), evt.getY());
+             
+             this.linha = tabelaAgenda.getSelectedRow();
+            String codigo = tabelaAgenda.getValueAt(linha, 0).toString();
+            this.codigoAgenda = Integer.parseInt(codigo);
+            menuAgenda.show(tabelaAgenda, evt.getX(), evt.getY());
+            System.out.println(codigo);
+
         }
     }//GEN-LAST:event_tabelaAgendaMouseClicked
 
@@ -338,8 +377,19 @@ public class ListarAgenda extends javax.swing.JPanel {
 
     }//GEN-LAST:event_jScrollPane1MouseClicked
 
+    private void EditarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_EditarActionPerformed
+        AgendaDao ag = new AgendaDao();
+        if (this.linha != -1) {
+            this.preencherCamposEdicao(this.codigoAgenda);
+            System.out.println(this.codigoAgenda);
+            this.cl.show(this, "editarTarefa");
+
+        }
+    }//GEN-LAST:event_EditarActionPerformed
+
     private void botaoCadastrarTarefaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botaoCadastrarTarefaActionPerformed
         Agenda A = new Agenda();
+        A.setCodigoAgenda(this.codigoAgenda);
         A.setDataCompromissoAgenda(dataAgenda.getText());
         A.setTituloAgenda(tituloAgenda.getText());
         A.setDescricaoAgenda(descricaoAgenda.getText());
@@ -359,17 +409,20 @@ public class ListarAgenda extends javax.swing.JPanel {
             Colaborador co = this.listaColaborador.get(comboColaborador.getSelectedIndex());
             A.setCodigoColaboradorAgenda(co.getIdColaborador());
         }
+        this.tituloAgenda.setText("");
+        this.descricaoAgenda.setText("");
+        this.dataAgenda.setText("");
 
         AgendaDao Ag = new AgendaDao();
         try {
             Ag.inserir(A);
-            JOptionPane.showMessageDialog(null, "Tarefa inserida com sucesso !");
+            JOptionPane.showMessageDialog(null, "Tarefa alterada com sucesso !");
         } catch (SQLException ex) {
-            JOptionPane.showMessageDialog(null, "Falha ao inserir tarefa !");
+            JOptionPane.showMessageDialog(null, "Falha ao alterar tarefa !");
             Logger.getLogger(CadastroColaborador.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_botaoCadastrarTarefaActionPerformed
-   
+
     private void comboEquipeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_comboEquipeActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_comboEquipeActionPerformed
@@ -410,14 +463,6 @@ public class ListarAgenda extends javax.swing.JPanel {
 
     }//GEN-LAST:event_radioColaboradorActionPerformed
 
-    private void EditarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_EditarActionPerformed
-        if (this.linha != -1) {
-            String codigo = tabelaAgenda.getValueAt(linha, 0).toString();
-            int codigoColaborador = Integer.parseInt(codigo);
-            this.cl.show(this, "editarTarefa");
-        }
-    }//GEN-LAST:event_EditarActionPerformed
-    
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenuItem Editar;
@@ -434,7 +479,7 @@ public class ListarAgenda extends javax.swing.JPanel {
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JPopupMenu menuAgenda;
     private javax.swing.JPanel painelListagem;
     private javax.swing.JRadioButton radioColaborador;

@@ -41,7 +41,7 @@ public class ColaboradorDao extends ConnectionFactory {
     }
         
        public boolean checkLogin(String loginColaborador , String senhaColaborador) throws SQLException  {
-        String sql = "SELECT * from colaborador where usuarioColaborador = ? and senhaColaborador = ? ";
+        String sql = "SELECT * from colaborador where usuarioColaborador = ? and senhaColaborador = ?";
         ResultSet rs = null;
         boolean check = false;
         Colaborador co = new Colaborador();
@@ -263,4 +263,15 @@ public class ColaboradorDao extends ConnectionFactory {
             return Colaborador;
         }
     }
+   public void UltimoAcesso(int codigo) throws SQLException {
+        String sql = "update colaborador set dataEntrada = now() where idColaborador = ?";
+        
+        try (PreparedStatement st = this.con.prepareStatement(sql)) {
+            st.setInt(1, codigo);
+            st.executeUpdate();
+            st.close();
+        }
+
+        this.con.close();
+   }
 }

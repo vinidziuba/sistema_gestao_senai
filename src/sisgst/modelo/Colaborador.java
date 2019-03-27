@@ -5,6 +5,8 @@
  */
 package sisgst.modelo;
 
+import java.util.Date;
+
 /**
  *
  * @author renan
@@ -26,6 +28,7 @@ public class Colaborador {
     private String cidadeColaborador;
     private String complementoColaborador;
     private String cepColaborador;
+    private Date dataEntrada;
 
     public int getIdColaborador() {
         return idColaborador;
@@ -87,8 +90,8 @@ public class Colaborador {
         return usuarioColaborador;
     }
 
-    public void setUsuarioColaborador(String usuarioColabador) {
-        this.usuarioColaborador = usuarioColabador;
+    public void setUsuarioColaborador(String usuarioColaborador) {
+        this.usuarioColaborador = usuarioColaborador;
     }
 
     public String getSenhaColaborador() {
@@ -147,6 +150,15 @@ public class Colaborador {
         this.cepColaborador = cepColaborador;
     }
 
+    public Date getDataEntrada() {
+        return dataEntrada;
+    }
+
+    public void setDataEntrada(Date dataEntrada) {
+        this.dataEntrada = dataEntrada;
+    }
+
+  
 
     
     

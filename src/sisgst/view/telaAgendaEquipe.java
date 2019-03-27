@@ -21,7 +21,7 @@ import sisgst.modelo.Equipe;
  *
  * @author Cristian
  */
-public class telaAgenda extends javax.swing.JPanel {
+public class telaAgendaEquipe extends javax.swing.JPanel {
 
     private List<Equipe> listaEquipe;
     private List<Colaborador> listaColaborador;
@@ -32,31 +32,25 @@ public class telaAgenda extends javax.swing.JPanel {
      *
      * @throws java.sql.SQLException
      */
-    public telaAgenda(Colaborador col) throws SQLException {
+    public telaAgendaEquipe() throws SQLException {
         initComponents();
-        int codigoColaborador = col.getIdColaborador();
-        String tipoColaborador = col.getTipoColaborador();
+
         EquipeDao equipe = new EquipeDao();
         this.listaEquipe = equipe.listarEquipeCombo();
-
         for (int i = 0; i < listaEquipe.size(); i++) {
             Equipe e = listaEquipe.get(i);
-            if (tipoColaborador.equals("Gestor")) {
-                comboEquipe.addItem(e.getNomeEquipe());
-            } else if (col.getEquipeColabarador() == e.getIdEquipe()) {
-                comboEquipe.addItem(e.getNomeEquipe());
-            }
+            comboEquipe.addItem(e.getNomeEquipe());
         }
+
         ColaboradorDao colaborador = new ColaboradorDao();
         this.listaColaborador = colaborador.listarColaboradorCombo();
         for (int i = 0; i < listaColaborador.size(); i++) {
             Colaborador co = listaColaborador.get(i);
-            if (tipoColaborador.equals("Gestor")) {
-                comboColaborador.addItem(co.getNomeColaborador());
-            } else if (col.getIdColaborador()== co.getIdColaborador()) {
-                comboColaborador.addItem(co.getNomeColaborador());
-            }
+            comboColaborador.addItem(co.getNomeColaborador());
         }
+        
+        this.comboColaborador.setEnabled(false);
+        this.radioColaborador.setEnabled(false);
     }
 
     /**
@@ -218,7 +212,6 @@ public class telaAgenda extends javax.swing.JPanel {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -294,27 +287,13 @@ public class telaAgenda extends javax.swing.JPanel {
         // TODO add your handling code here:
     }//GEN-LAST:event_comboEquipeActionPerformed
 
-    private void comboColaboradorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_comboColaboradorActionPerformed
-
-    }//GEN-LAST:event_comboColaboradorActionPerformed
-
     private void radioEquipeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_radioEquipeActionPerformed
 
     }//GEN-LAST:event_radioEquipeActionPerformed
 
-    private void radioColaboradorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_radioColaboradorActionPerformed
-
-
-    }//GEN-LAST:event_radioColaboradorActionPerformed
-
     private void radioEquipeMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_radioEquipeMouseClicked
 
     }//GEN-LAST:event_radioEquipeMouseClicked
-
-    private void radioColaboradorMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_radioColaboradorMouseClicked
-
-
-    }//GEN-LAST:event_radioColaboradorMouseClicked
 
     private void radioEquipeStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_radioEquipeStateChanged
 
@@ -324,6 +303,14 @@ public class telaAgenda extends javax.swing.JPanel {
         }
     }//GEN-LAST:event_radioEquipeStateChanged
 
+    private void radioColaboradorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_radioColaboradorActionPerformed
+
+    }//GEN-LAST:event_radioColaboradorActionPerformed
+
+    private void radioColaboradorMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_radioColaboradorMouseClicked
+
+    }//GEN-LAST:event_radioColaboradorMouseClicked
+
     private void radioColaboradorStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_radioColaboradorStateChanged
 
         if (radioColaborador.isSelected() == radioAux) {
@@ -331,6 +318,10 @@ public class telaAgenda extends javax.swing.JPanel {
             this.comboColaborador.setEnabled(true);
         }
     }//GEN-LAST:event_radioColaboradorStateChanged
+
+    private void comboColaboradorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_comboColaboradorActionPerformed
+
+    }//GEN-LAST:event_comboColaboradorActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
