@@ -50,8 +50,7 @@ public class Principal extends javax.swing.JFrame {
         CadastroColaborador cadastroCo = new CadastroColaborador();
         CadastroEquipe cadastroEqui = new CadastroEquipe();
         painelColaborador pCol = new painelColaborador();
-        painelAdm pAdm = new painelAdm();
-        
+   
        
         
         
@@ -63,7 +62,7 @@ public class Principal extends javax.swing.JFrame {
         PainelPrincipal.add(cadastroEqui, "cadastroEqui");
         PainelPrincipal.add(viewLogin, "Login");
         PainelPrincipal.add(pCol, "TelaCol");
-        PainelPrincipal.add(pAdm, "TelaAdm");
+
         PainelPrincipal.add(listaCo, "edicaoCo");
       
   

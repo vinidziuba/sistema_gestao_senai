@@ -1,6 +1,8 @@
 package sisgst.view;
 
 import java.awt.CardLayout;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
@@ -20,6 +22,7 @@ public class ListagemColaborador extends javax.swing.JPanel {
     private int linha;
 
     private List<Equipe> listaEquipe;
+
     public ListagemColaborador() throws SQLException {
         initComponents();
 
@@ -33,15 +36,13 @@ public class ListagemColaborador extends javax.swing.JPanel {
         this.cl.show(this, "painelListagem");
 
         EquipeDao equipe = new EquipeDao();
-       
-       
-         this.listaEquipe = equipe.listarEquipeCombo();
-            
 
-            for (int i = 0; i < listaEquipe.size(); i++) {
-                Equipe e = listaEquipe.get(i);
-                comboEquipe.addItem(e.getNomeEquipe());
-            }
+        this.listaEquipe = equipe.listarEquipeCombo();
+
+        for (int i = 0; i < listaEquipe.size(); i++) {
+            Equipe e = listaEquipe.get(i);
+            comboEquipe.addItem(e.getNomeEquipe());
+        }
         this.popularTabela();
     }
 
@@ -527,23 +528,27 @@ public class ListagemColaborador extends javax.swing.JPanel {
         tabelaColaborador.updateUI();
     }
     private void excluirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_excluirActionPerformed
-        
+
         Object[] options = {"Sim", "Não"};
         int opcaoSelecionada = JOptionPane.showOptionDialog(null, "Deseja realmente eliminar este colaborador ?", "Atenção!", JOptionPane.DEFAULT_OPTION, JOptionPane.WARNING_MESSAGE, null, options, options[0]);
 
         if (opcaoSelecionada == 0) {
-        Colaborador co = new Colaborador();
-        
-        co.setIdColaborador((int)tabelaColaborador.getValueAt(tabelaColaborador.getSelectedRow(), 0));
-        
-        ColaboradorDao CoDao = new ColaboradorDao();
-        try {
-            CoDao.eliminar(co);
-            JOptionPane.showMessageDialog(null, "Excluido com sucesso!");
-        } catch (SQLException ex) {
-            JOptionPane.showMessageDialog(null, "Falha ao excluir!");
-            Logger.getLogger(CadastroColaborador.class.getName()).log(Level.SEVERE, null, ex);
-        }
+            Colaborador co = new Colaborador();
+
+            co.setIdColaborador((int) tabelaColaborador.getValueAt(tabelaColaborador.getSelectedRow(), 0));
+
+            ColaboradorDao CoDao = new ColaboradorDao(); 
+            try {
+                CoDao.eliminar(co);
+                
+                JOptionPane.showMessageDialog(null, "Excluido com sucesso!");
+                limparTabela();
+                popularTabela();
+            } catch (SQLException ex) {
+                JOptionPane.showMessageDialog(null, "Falha ao excluir!");
+                Logger.getLogger(CadastroColaborador.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            
         }
     }//GEN-LAST:event_excluirActionPerformed
 
@@ -566,9 +571,9 @@ public class ListagemColaborador extends javax.swing.JPanel {
         String cep = cpCEP.getText();
         cep = cep.replaceAll("[^0-9]", "");
         co.setCepColaborador((cep));
-        co.setIdColaborador((int)tabelaColaborador.getValueAt(tabelaColaborador.getSelectedRow(), 0));
-        
-        ColaboradorDao CoDao = new ColaboradorDao(); 
+        co.setIdColaborador((int) tabelaColaborador.getValueAt(tabelaColaborador.getSelectedRow(), 0));
+
+        ColaboradorDao CoDao = new ColaboradorDao();
         try {
             CoDao.alterar(co);
             JOptionPane.showMessageDialog(null, "Colaborador atualizado com sucesso !");
@@ -576,7 +581,7 @@ public class ListagemColaborador extends javax.swing.JPanel {
             JOptionPane.showMessageDialog(null, "Falha ao atualizar colaborador !");
             Logger.getLogger(CadastroColaborador.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
+
     }//GEN-LAST:event_botaoEditarActionPerformed
 
 

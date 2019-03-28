@@ -16,7 +16,11 @@ public class EquipeDao extends ConnectionFactory {
     public EquipeDao() {
         this.con = this.getConnection();
     }
-
+    /**
+     * Metodo inserir equipe
+     * @param eq
+     * @throws SQLException 
+     */
     public void inserir(Equipe eq) throws SQLException {
         String sql = "insert into equipe (idEquipe, nomeEquipe, descricaoEquipe)values(?, ?, ?)";
 
@@ -31,7 +35,11 @@ public class EquipeDao extends ConnectionFactory {
         this.con.close();
 
     }
-
+    /**
+     * Metodo alterar equipe
+     * @param eq
+     * @throws SQLException 
+     */
     public void alterar(Equipe eq) throws SQLException {
 
         String sql = "update equipe set nomeEquipe = ?, descricaoEquipe = ? where idEquipe = ?";
@@ -47,7 +55,11 @@ public class EquipeDao extends ConnectionFactory {
         this.con.close();
 
     }
-
+    /**
+     * Metodo eliminar equipe
+     * @param codigo
+     * @throws SQLException 
+     */
     public void eliminar(int codigo) throws SQLException {
         String sql = "delete from equipe where idEquipe = ?";
 
@@ -58,7 +70,11 @@ public class EquipeDao extends ConnectionFactory {
         }
         this.con.close();
     }
-
+/**
+ * Metodo Listar equipe
+ * @return
+ * @throws SQLException 
+ */
     public List<Equipe> listarEquipe() throws SQLException {
         String sql = "select * from equipe";
 
@@ -81,7 +97,12 @@ public class EquipeDao extends ConnectionFactory {
             return Equipe;
         }
     }
-
+/**
+ * Metodo para buscar equipe
+ * @param idEquipe
+ * @return Retorna a variavel equipe
+ * @throws SQLException 
+ */
     public Equipe getEquipe(int idEquipe) throws SQLException {
         String sql = "select * from equipe where idEquipe = ?";
         Equipe equipe = null;
@@ -103,7 +124,11 @@ public class EquipeDao extends ConnectionFactory {
         this.con.close();
         return equipe;
     }
-    
+    /**
+     * Lista equipes na combo box
+     * @return retorna a uma variavel equipe
+     * @throws SQLException 
+     */
      public List<Equipe> listarEquipeCombo() throws SQLException {
         String sql = "select * from equipe";
         
